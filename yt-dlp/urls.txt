@@ -1,0 +1,11 @@
+# yt-dlp 批量下载列表
+# 使用说明:
+#   - 每行填写一个视频 URL
+#   - 以 # 开头的行为注释，会被忽略
+#   - 空行自动跳过
+#   - 支持 YouTube、Bilibili 等主流视频网站
+
+# 在下方添加你的下载链接：
+#https://www.youtube.com/watch?v=7XQdp3hItX4
+#https://www.bilibili.com/video/BV1zZtwzbEK5/?spm_id_from=333.337.search-card.all.click&vd_source=30fb1c48ea125a8c6fd3f531d7d36f72
+#https://www.youtube.com/watch?v=bLksi7Wt0yE

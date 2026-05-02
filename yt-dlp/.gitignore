@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# yt-dlp 临时文件
+*.part
+*.ytdl
+*.temp
+
+# 下载的媒体文件（如放到本目录）
+*.mp4
+*.mkv
+*.webm
+*.mp3
+*.m4a
+
+# Cookies（包含隐私信息，不提交）
+cookies.txt
+
+# 系统文件
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 默认：文本文件自动检测，仓库存 LF
+* text=auto
+
+# Shell 脚本强制 LF（Linux/macOS/WSL 直接可运行）
+*.sh text eol=lf
+
+# Windows 批处理强制 CRLF（Windows 直接可运行）
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# 配置/文档统一 LF
+*.conf text eol=lf
+*.md   text eol=lf
+*.txt  text eol=lf
+*.py   text eol=lf
+
+# 二进制文件不处理行尾
+*.png binary
+*.jpg binary
+*.mp4 binary
+*.zip binary
