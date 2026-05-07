@@ -1,0 +1,33 @@
+# Go build output
+/ai-usage-notifier
+/ai-usage-notifier.exe
+*.test
+*.out
+
+# Local Go caches used by this workspace
+/.gocache/
+/.gomodcache/
+
+# Runtime state and logs
+*.jsonl
+*.sqlite
+*.sqlite3
+*.db
+*.log
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*service-account*.json
+
+# IDE/editor config files
+gen-lang-client*.json
+
+# Editor and OS files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
