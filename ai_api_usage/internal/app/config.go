@@ -38,7 +38,15 @@ type Config struct {
 	HTTPTimeout time.Duration
 }
 
+type ConfigOptions struct {
+	IncludeGemini bool
+}
+
 func LoadConfig() (Config, error) {
+	return LoadConfigWithOptions(ConfigOptions{IncludeGemini: true})
+}
+
+func LoadConfigWithOptions(options ConfigOptions) (Config, error) {
 	if err := loadDotEnv(".env"); err != nil {
 		return Config{}, err
 	}
@@ -89,9 +97,6 @@ func LoadConfig() (Config, error) {
 
 	var missing []string
 	for name, value := range map[string]string{
-		"GEMINI_BQ_PROJECT":     cfg.GeminiBQProject,
-		"GEMINI_BQ_DATASET":     cfg.GeminiBQDataset,
-		"GEMINI_BILLING_TABLE":  cfg.GeminiBillingTable,
 		"DEEPSEEK_API_KEY":      cfg.DeepSeekAPIKey,
 		"GITHUB_TOKEN":          cfg.GitHubToken,
 		"GITHUB_USERNAME":       cfg.GitHubUsername,
@@ -106,14 +111,29 @@ func LoadConfig() (Config, error) {
 	if len(missing) > 0 {
 		return Config{}, fmt.Errorf("missing required environment variables: %s", strings.Join(missing, ", "))
 	}
-	if err := validateBQIdentifier(cfg.GeminiBQProject); err != nil {
-		return Config{}, fmt.Errorf("invalid GEMINI_BQ_PROJECT: %w", err)
-	}
-	if err := validateBQIdentifier(cfg.GeminiBQDataset); err != nil {
-		return Config{}, fmt.Errorf("invalid GEMINI_BQ_DATASET: %w", err)
-	}
-	if err := validateBQTable(cfg.GeminiBillingTable); err != nil {
-		return Config{}, fmt.Errorf("invalid GEMINI_BILLING_TABLE: %w", err)
+	if options.IncludeGemini {
+		var missingGemini []string
+		for name, value := range map[string]string{
+			"GEMINI_BQ_PROJECT":    cfg.GeminiBQProject,
+			"GEMINI_BQ_DATASET":    cfg.GeminiBQDataset,
+			"GEMINI_BILLING_TABLE": cfg.GeminiBillingTable,
+		} {
+			if value == "" {
+				missingGemini = append(missingGemini, name)
+			}
+		}
+		if len(missingGemini) > 0 {
+			return Config{}, fmt.Errorf("missing Gemini environment variables for --all: %s", strings.Join(missingGemini, ", "))
+		}
+		if err := validateBQIdentifier(cfg.GeminiBQProject); err != nil {
+			return Config{}, fmt.Errorf("invalid GEMINI_BQ_PROJECT: %w", err)
+		}
+		if err := validateBQIdentifier(cfg.GeminiBQDataset); err != nil {
+			return Config{}, fmt.Errorf("invalid GEMINI_BQ_DATASET: %w", err)
+		}
+		if err := validateBQTable(cfg.GeminiBillingTable); err != nil {
+			return Config{}, fmt.Errorf("invalid GEMINI_BILLING_TABLE: %w", err)
+		}
 	}
 	if cfg.GitHubCopilotSource != "auto" && cfg.GitHubCopilotSource != "api" && cfg.GitHubCopilotSource != "settings_page" {
 		return Config{}, fmt.Errorf("GITHUB_COPILOT_SOURCE must be one of auto, api, settings_page")

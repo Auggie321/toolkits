@@ -21,7 +21,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancel()
 
-	cfg, err := app.LoadConfig()
+	cfg, err := app.LoadConfigWithOptions(app.ConfigOptions{IncludeGemini: *all})
 	if err != nil {
 		log.Fatal(err)
 	}
